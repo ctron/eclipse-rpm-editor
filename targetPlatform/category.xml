@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/de.dentrassi.eclipse.rpm_1.0.0.qualifier.jar" id="de.dentrassi.eclipse.rpm" version="1.0.0.qualifier">
+      <category name="rpm"/>
+   </feature>
+   <category-def name="rpm" label="RPM Editor">
+      <description>
+         An Eclipse Editor view for viewing RPM files
+      </description>
+   </category-def>
+</site>

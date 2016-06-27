@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="RPM"
+            extensions="rpm"
+            icon="icons/rpm.gif"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="de.dentrassi.eclipse.rpm.editor.EditorImpl"
+            id="de.dentrassi.eclipse.rpm.editor.XMLEditor">
+      </editor>
+   </extension>
+
+</plugin>
