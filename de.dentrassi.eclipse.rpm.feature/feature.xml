@@ -17,7 +17,7 @@
 
    <license url="%licenseURL">
       %license
-  </license>
+   </license>
 
    <requires>
       <import plugin="org.eclipse.ui"/>
@@ -57,6 +57,20 @@
 
    <plugin
          id="org.apache.commons.compress"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.guava"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.tukani.xz"
          download-size="0"
          install-size="0"
          version="0.0.0"
