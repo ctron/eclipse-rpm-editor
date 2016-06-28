@@ -11,8 +11,8 @@
 package de.dentrassi.eclipse.rpm.editor;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +20,8 @@ import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.cpio.CpioArchiveInputStream;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.packagedrone.utils.rpm.RpmLead;
 import org.eclipse.packagedrone.utils.rpm.RpmSignatureTag;
 import org.eclipse.packagedrone.utils.rpm.RpmTag;
@@ -27,6 +29,7 @@ import org.eclipse.packagedrone.utils.rpm.parse.InputHeader;
 import org.eclipse.packagedrone.utils.rpm.parse.RpmInputStream;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
 public class EditorImpl extends MultiPageEditorPart {
@@ -92,11 +95,28 @@ public class EditorImpl extends MultiPageEditorPart {
 	@Override
 	protected void setInput(final IEditorInput input) {
 		super.setInput(input);
-		if (input instanceof IPathEditorInput) {
-			final IPath path = ((IPathEditorInput) input).getPath();
-			final RpmInformation ri = load(path.toFile().toPath());
-			setInformation(ri);
+		try {
+			if (input instanceof IPathEditorInput) {
+				final IPath path = ((IPathEditorInput) input).getPath();
+				try (InputStream stream = Files.newInputStream(path.toFile().toPath())) {
+					final RpmInformation ri = load(stream);
+					setInformation(ri);
+				}
+			} else if (input instanceof IStorageEditorInput) {
+				try (InputStream stream = ((IStorageEditorInput) input).getStorage().getContents()) {
+					final RpmInformation ri = load(stream);
+					setInformation(ri);
+				}
+			}
+		} catch (final Exception e) {
+			Activator.getDefault().getLog()
+					.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to load RPM file", e));
+			setError(e);
 		}
+	}
+
+	private void setError(final Exception e) {
+		// FIXME: show error pane
 	}
 
 	private void setInformation(final RpmInformation ri) {
@@ -109,8 +129,8 @@ public class EditorImpl extends MultiPageEditorPart {
 		this.information = ri;
 	}
 
-	private RpmInformation load(final Path path) {
-		try (RpmInputStream in = new RpmInputStream(Files.newInputStream(path))) {
+	private RpmInformation load(final InputStream stream) {
+		try (RpmInputStream in = new RpmInputStream(stream)) {
 			final RpmLead lead = in.getLead();
 
 			final InputHeader<RpmTag> header = in.getPayloadHeader();

@@ -119,8 +119,7 @@ public class ContentTable {
 		this.wrapper = new Composite(parent, SWT.NO_BACKGROUND);
 		parent.setLayout(new FillLayout());
 
-		this.viewer = new TreeViewer(this.wrapper,
-				SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+		this.viewer = new TreeViewer(this.wrapper, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 
 		final TreeColumnLayout layout = new TreeColumnLayout();
 

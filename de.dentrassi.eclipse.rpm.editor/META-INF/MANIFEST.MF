@@ -8,11 +8,14 @@ Bundle-Vendor: Jens Reimann
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
- org.eclipse.ui.editors
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench,
+ org.eclipse.ui.ide;bundle-version="3.12.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.commons.compress.archivers;version="1.9.0",
  org.apache.commons.compress.archivers.cpio;version="1.6.0",
+ org.eclipse.core.resources,
  org.eclipse.packagedrone.utils.rpm;version="0.13.0",
  org.eclipse.packagedrone.utils.rpm.header;version="0.13.0",
  org.eclipse.packagedrone.utils.rpm.parse;version="0.13.0",
