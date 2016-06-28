@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.dentrassi.eclipse.rpm</groupId>
+	<artifactId>parent</artifactId>
+	<version>1.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<url>https://dentrassi.de</url>
+	<name>RPM Editor View</name>
+	<inceptionYear>2016</inceptionYear>
+
+	<description>Eclipse Editor view for RPM files</description>
+
+	<developers>
+		<developer>
+			<name>Jens Reimann</name>
+			<email>ctron@dentrassi.de</email>
+			<id>ctron</id>
+			<organization>IBH SYSTEMS GmbH</organization>
+			<organizationUrl>http://ibh-systems.com</organizationUrl>
+			<url>http://dentrassi.de</url>
+		</developer>
+	</developers>
+
+	<prerequisites>
+		<maven>3.3</maven>
+	</prerequisites>
+
+	<scm>
+		<connection>scm:git:git://github.com/ctron/eclipse-rpm-editor</connection>
+		<url>https://github.com/ctron/eclipse-rpm-editor</url>
+	</scm>
+
+	<issueManagement>
+		<url>https://github.com/ctron/eclipse-rpm-editor/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>The Eclipse Public License Version 1.0</name>
+			<url>http://www.eclipse.org/legal/epl-v10.html</url>
+			<distribution>manual</distribution>
+		</license>
+	</licenses>
+
+	<properties>
+		<tycho-version>0.25.0</tycho-version>
+		<tycho-extras-version>0.25.0</tycho-extras-version>
+
+		<tycho.scmUrl>scm:git:ssh://github.com/ctron/eclipse-rpm-editor</tycho.scmUrl>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
+		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
+
+		<jgit.dirtyWorkingTree>error</jgit.dirtyWorkingTree>
+	</properties>
+
+	<modules>
+		<module>targetPlatform</module>
+		<module>de.dentrassi.eclipse.rpm.editor</module>
+		<module>de.dentrassi.eclipse.rpm.editor.feature</module>
+		<module>repository</module>
+	</modules>
+
+	<build>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.9.1</version>
+				<executions>
+					<execution>
+						<id>parse-version</id>
+						<goals>
+							<goal>parse-version</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.3.1</version>
+				<executions>
+					<execution>
+						<id>enforce-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<version>1.8</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-packaging-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.tycho.extras</groupId>
+						<artifactId>tycho-buildtimestamp-jgit</artifactId>
+						<version>${tycho-extras-version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.tycho.extras</groupId>
+						<artifactId>tycho-sourceref-jgit</artifactId>
+						<version>${tycho-extras-version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<timestampProvider>jgit</timestampProvider>
+					<jgit.ignore>
+						pom.xml
+						CHANGES.txt
+					</jgit.ignore>
+					<jgit.dirtyWorkingTree>${jgit.dirtyWorkingTree}</jgit.dirtyWorkingTree>
+					<format>yyyyMMdd-HHmm</format>
+					<sourceReferences>
+						<generate>true</generate>
+					</sourceReferences>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<target>
+						<artifact>
+							<groupId>de.dentrassi.eclipse.rpm</groupId>
+							<artifactId>targetPlatform</artifactId>
+							<version>${project.parent.version}</version>
+						</artifact>
+					</target>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.8</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho.extras</groupId>
+					<artifactId>tycho-p2-extras-plugin</artifactId>
+					<version>${tycho-extras-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>build-helper-maven-plugin</artifactId>
+										<versionRange>[1.9.1,)</versionRange>
+										<goals>
+											<goal>parse-version</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+	</build>
+</project>

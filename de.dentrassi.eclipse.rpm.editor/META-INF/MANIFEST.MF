@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RPM Editor
 Bundle-SymbolicName: de.dentrassi.eclipse.rpm.editor;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.1.qualifier
 Bundle-Activator: de.dentrassi.eclipse.rpm.editor.Activator
 Bundle-Vendor: Jens Reimann
 Require-Bundle: org.eclipse.ui,

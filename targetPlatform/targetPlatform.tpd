@@ -1,0 +1,25 @@
+target "RPM Editor"
+
+with source
+
+location "http://download.eclipse.org/releases/neon" {
+  org.eclipse.platform.feature.group
+  org.eclipse.emf.feature.group
+}
+
+location "http://download.eclipse.org/cbi/updates/license/" {
+  org.eclipse.license.feature.group
+}
+
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/" {
+  org.slf4j.api
+}
+
+location "https://pdrone1-ctron.rhcloud.com/p2/eclipse-rpm-builder-deps/" {
+  bcpg
+  bcprov
+  com.google.guava
+  org.apache.commons.compress
+  org.eclipse.packagedrone.utils.rpm
+  org.tukani.xz
+}
