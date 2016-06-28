@@ -2,7 +2,7 @@
 <feature
       id="de.dentrassi.eclipse.rpm.editor"
       label="%featureName"
-      version="1.0.1.qualifier"
+      version="1.0.2.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1.v20140414-1359">
@@ -38,42 +38,50 @@
          id="bcpg"
          download-size="0"
          install-size="0"
-         version="1.52.0"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="bcprov"
          download-size="0"
          install-size="0"
-         version="1.52.0"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.packagedrone.utils.rpm"
          download-size="0"
          install-size="0"
-         version="0.13.0.20160518-1208"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.commons.compress"
          download-size="0"
          install-size="0"
-         version="1.9.0"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="com.google.guava"
          download-size="0"
          install-size="0"
-         version="18.0.0"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.tukani.xz"
          download-size="0"
          install-size="0"
-         version="1.5.0.20151105-1627"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.dentrassi.eclipse.rpm.editor.xz.fix"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
          unpack="false"/>
 
 </feature>

@@ -7,6 +7,6 @@
 		<artifactId>parent</artifactId>
 		<version>1.0.2-SNAPSHOT</version>
 	</parent>
-	<artifactId>de.dentrassi.eclipse.rpm.editor</artifactId>
+	<artifactId>de.dentrassi.eclipse.rpm.editor.xz.fix</artifactId>
 	<packaging>eclipse-plugin</packaging>
 </project>

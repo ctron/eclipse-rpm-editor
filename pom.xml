@@ -5,7 +5,7 @@
 
 	<groupId>de.dentrassi.eclipse.rpm</groupId>
 	<artifactId>parent</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<url>https://dentrassi.de</url>
@@ -65,6 +65,7 @@
 		<module>targetPlatform</module>
 		<module>de.dentrassi.eclipse.rpm.editor</module>
 		<module>de.dentrassi.eclipse.rpm.editor.feature</module>
+		<module>de.dentrassi.eclipse.rpm.editor.xz.fix</module>
 		<module>repository</module>
 	</modules>
 
