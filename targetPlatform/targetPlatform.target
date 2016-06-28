@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="RPM Editor" sequenceNumber="1467110734">
+<target name="RPM Editor" sequenceNumber="1467119562">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.platform.feature.group" version="4.6.0.v20160606-1342"/>
@@ -21,7 +21,7 @@
       <unit id="bcprov" version="1.52.0"/>
       <unit id="com.google.guava" version="18.0.0"/>
       <unit id="org.apache.commons.compress" version="1.9.0"/>
-      <unit id="org.eclipse.packagedrone.utils.rpm" version="0.13.0.20160518-1208"/>
+      <unit id="org.eclipse.packagedrone.utils.rpm" version="0.14.0.201606281511"/>
       <unit id="org.tukani.xz" version="1.5.0.20151105-1627"/>
       <repository location="https://repository-ctron.rhcloud.com/p2/eclipse-rpm-editor-deps/"/>
     </location>
