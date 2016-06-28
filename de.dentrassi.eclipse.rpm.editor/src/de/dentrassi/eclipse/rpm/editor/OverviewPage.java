@@ -35,7 +35,7 @@ public class OverviewPage {
 	private final Text sigVersion;
 
 	public OverviewPage(final Composite parent) {
-		this.container = new Composite(parent, SWT.NO_BACKGROUND | SWT.INHERIT_DEFAULT);
+		this.container = new Composite(parent, SWT.INHERIT_DEFAULT);
 		this.container.setLayout(new GridLayout(2, false));
 
 		this.name = createField("Name");
