@@ -15,7 +15,7 @@ location "http://download.eclipse.org/tools/orbit/downloads/drops/R2015051921075
   org.slf4j.api
 }
 
-location "https://pdrone1-ctron.rhcloud.com/p2/eclipse-rpm-builder-deps/" {
+location "https://repository-ctron.rhcloud.com/p2/eclipse-rpm-editor-deps/" {
   bcpg
   bcprov
   com.google.guava
