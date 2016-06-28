@@ -39,6 +39,7 @@ public class EditorImpl extends MultiPageEditorPart {
 	private HeaderTable headerPage;
 	private HeaderTable sigHeaderPage;
 	private ContentTable contentPage;
+	private DependenciesTable depsPage;
 
 	public EditorImpl() {
 	}
@@ -48,6 +49,7 @@ public class EditorImpl extends MultiPageEditorPart {
 		createOverviewPage();
 		createHeaderPage();
 		createSignatureHeaderPage();
+		createDependenciesPage();
 		createContentPage();
 
 		if (this.information != null) {
@@ -71,6 +73,12 @@ public class EditorImpl extends MultiPageEditorPart {
 		this.overviewPage = new OverviewPage(getContainer());
 		final int idx = addPage(this.overviewPage.getContainer());
 		setPageText(idx, "Lead");
+	}
+
+	private void createDependenciesPage() {
+		this.depsPage = new DependenciesTable(getContainer());
+		final int idx = addPage(this.depsPage.getContainer());
+		setPageText(idx, "Dependencies");
 	}
 
 	private void createContentPage() {
@@ -125,7 +133,17 @@ public class EditorImpl extends MultiPageEditorPart {
 			this.headerPage.setInformation(ri.getHeader());
 			this.sigHeaderPage.setInformation(ri.getSignatureHeader());
 			this.contentPage.setInformation(ri.getFiles());
+			this.depsPage.setInformation(ri);
 		}
+
+		if (ri != null) {
+			setContentDescription(String.format("%s", ri.getLead().getName()));
+			setPartName(String.format("%s", ri.getLead().getName()));
+		} else {
+			setContentDescription("");
+			setPartName("");
+		}
+
 		this.information = ri;
 	}
 
