@@ -2,7 +2,7 @@
 <feature
       id="de.dentrassi.eclipse.rpm.editor"
       label="%featureName"
-      version="1.0.3.qualifier"
+      version="1.0.4.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1.v20140414-1359">
