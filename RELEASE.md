@@ -9,7 +9,7 @@ Build:
 Deploy:
 
     cd path/to/gh-pages/p2
-    rm -rf .
+    rm -Rf *
     cp repository/target/repository path/to/gh-pages/p2
     git add .
     git rm # remove deleted files from git status
