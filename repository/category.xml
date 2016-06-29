@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/de.dentrassi.eclipse.rpm.editor_1.0.4.qualifier.jar" id="de.dentrassi.eclipse.rpm.editor" version="1.0.4.qualifier">
+   <feature url="features/de.dentrassi.eclipse.rpm.editor_1.0.5.qualifier.jar" id="de.dentrassi.eclipse.rpm.editor" version="1.0.5.qualifier">
       <category name="rpm"/>
    </feature>
    <category-def name="rpm" label="RPM Editor">
