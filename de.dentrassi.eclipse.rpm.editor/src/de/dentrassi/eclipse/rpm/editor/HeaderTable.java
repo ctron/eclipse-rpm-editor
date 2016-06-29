@@ -24,9 +24,10 @@ import java.util.stream.Stream;
 
 import org.eclipse.jface.layout.AbstractColumnLayout;
 import org.eclipse.jface.layout.TreeColumnLayout;
-import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ITreePathContentProvider;
+import org.eclipse.jface.viewers.StyledCellLabelProvider;
+import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
@@ -83,7 +84,7 @@ public class HeaderTable {
 			}
 		});
 
-		createColumn(layout, "Type", 1, entry -> String.format("%d", entry.getValue().getType()));
+		createStyledColumn(layout, "Type", 1, entry -> makeType(entry));
 		createColumn(layout, "Count", 1, entry -> String.format("%d", entry.getValue().getCount()));
 		createColumn(layout, "Index", 1, entry -> String.format("%d", entry.getValue().getIndex()));
 		createColumnCell(layout, "Value", 10, HeaderTable::updateCellValue);
@@ -126,6 +127,21 @@ public class HeaderTable {
 			}
 		};
 		this.viewer.setContentProvider(p);
+	}
+
+	private StyledString makeType(final Entry entry) {
+		final Object val = entry.getValue().getValue();
+
+		final StyledString sb = new StyledString();
+
+		sb.append(Integer.toString(entry.getValue().getType()));
+
+		if (val != null) {
+			sb.append(" ");
+			sb.append(val.getClass().getSimpleName(), StyledString.QUALIFIER_STYLER);
+		}
+
+		return sb;
 	}
 
 	private static Optional<Stream<?>> makeObjects(final Object value) {
@@ -179,10 +195,21 @@ public class HeaderTable {
 		});
 	}
 
+	private void createStyledColumn(final AbstractColumnLayout layout, final String name, final int weight,
+			final Function<Entry, StyledString> label) {
+		createColumnCell(layout, name, weight, (entry, cell) -> {
+			final StyledString s = label.apply(entry);
+			if (s != null) {
+				cell.setText(s.getString());
+				cell.setStyleRanges(s.getStyleRanges());
+			}
+		});
+	}
+
 	private void createColumnCell(final AbstractColumnLayout layout, final String name, final int weight,
 			final Consumer<ViewerCell> cellUpdater) {
 		final TreeViewerColumn col = new TreeViewerColumn(this.viewer, SWT.NONE);
-		col.setLabelProvider(new CellLabelProvider() {
+		col.setLabelProvider(new StyledCellLabelProvider() {
 
 			@Override
 			public void update(final ViewerCell cell) {

@@ -132,7 +132,7 @@ public class EditorImpl extends MultiPageEditorPart {
 			this.overviewPage.setInformation(ri);
 			this.headerPage.setInformation(ri.getHeader());
 			this.sigHeaderPage.setInformation(ri.getSignatureHeader());
-			this.contentPage.setInformation(ri.getFiles());
+			this.contentPage.setInformation(ri);
 			this.depsPage.setInformation(ri);
 		}
 
