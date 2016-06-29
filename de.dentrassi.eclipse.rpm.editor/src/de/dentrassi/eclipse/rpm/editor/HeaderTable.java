@@ -25,6 +25,8 @@ import java.util.stream.Stream;
 import org.eclipse.jface.layout.AbstractColumnLayout;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreePathContentProvider;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
@@ -67,8 +69,10 @@ public class HeaderTable {
 
 	private final TreeViewer viewer;
 	private final Composite wrapper;
+	private Function<Integer, Object> tagNameProvider;
 
 	public HeaderTable(final Composite parent, final Function<Integer, Object> tagNameProvider) {
+		this.tagNameProvider = tagNameProvider;
 		this.wrapper = new Composite(parent, SWT.NO_BACKGROUND);
 		parent.setLayout(new FillLayout());
 
@@ -78,10 +82,7 @@ public class HeaderTable {
 
 		createColumn(layout, "Tag ID", 1, entry -> String.format("%d", entry.getKey()));
 		createColumnCell(layout, "Tag Name", 2, (entry, cell) -> {
-			final Object name = tagNameProvider.apply(entry.getKey());
-			if (name != null) {
-				cell.setText(name.toString());
-			}
+			makeTagName(entry).ifPresent(cell::setText);
 		});
 
 		createStyledColumn(layout, "Type", 1, entry -> makeType(entry));
@@ -91,6 +92,7 @@ public class HeaderTable {
 
 		this.wrapper.setLayout(layout);
 		this.viewer.getTree().setHeaderVisible(true);
+		this.viewer.addDoubleClickListener(this::handleDoubleClick);
 
 		final ITreePathContentProvider p = new ITreePathContentProvider() {
 
@@ -129,6 +131,14 @@ public class HeaderTable {
 		this.viewer.setContentProvider(p);
 	}
 
+	private Optional<String> makeTagName(final Entry entry) {
+		final Object name = this.tagNameProvider.apply(entry.getKey());
+		if (name == null) {
+			return Optional.empty();
+		}
+		return Optional.of(name.toString());
+	}
+
 	private StyledString makeType(final Entry entry) {
 		final Object val = entry.getValue().getValue();
 
@@ -142,6 +152,21 @@ public class HeaderTable {
 		}
 
 		return sb;
+	}
+
+	private void handleDoubleClick(final DoubleClickEvent dce) {
+		if (dce.getSelection().isEmpty() || !(dce.getSelection() instanceof IStructuredSelection)) {
+			return;
+		}
+		final IStructuredSelection sel = (IStructuredSelection) dce.getSelection();
+		for (final Object o : (Iterable<?>) sel::iterator) {
+			if (o instanceof Entry) {
+				final Entry e = (Entry) o;
+				final String s = makeString(e);
+				final String name = makeTagName(e).orElse(Integer.toString(e.getKey()));
+				new TextDialog(() -> this.viewer.getControl().getShell(), name, s).open();
+			}
+		}
 	}
 
 	private static Optional<Stream<?>> makeObjects(final Object value) {
@@ -164,25 +189,37 @@ public class HeaderTable {
 
 		if (ele instanceof Entry) {
 			final Entry entry = (Entry) ele;
-			final Object value = entry.getValue().getValue();
-
-			if (value instanceof byte[]) {
-				final byte[] data = (byte[]) value;
-				final String suffix = data.length > 200 ? "…" : "";
-				cell.setText(Rpms.toHex(data, 200) + suffix);
-			} else if (value != null) {
-				final Optional<Stream<?>> os = makeObjects(value);
-				if (os.isPresent()) {
-					final Stream<?> s = os.get();
-					cell.setText(s.map(Object::toString).collect(Collectors.joining(", ")));
-				} else {
-					cell.setText(value.toString());
-				}
-			}
+			final String s = cut(makeString(entry), 200);
+			cell.setText(s);
 
 		} else if (ele != null) {
 			cell.setText(ele.toString());
 		}
+	}
+
+	private static String makeString(final Entry entry) {
+		final Object value = entry.getValue().getValue();
+		if (value instanceof byte[]) {
+			final byte[] data = (byte[]) value;
+			return Rpms.toHex(data);
+		} else if (value != null) {
+			final Optional<Stream<?>> os = makeObjects(value);
+			if (os.isPresent()) {
+				final Stream<?> s = os.get();
+				return s.map(Object::toString).collect(Collectors.joining(", "));
+			} else {
+				return value.toString();
+			}
+		}
+		return null;
+	}
+
+	private static String cut(final String string, final int maxLength) {
+		if (string == null || maxLength <= 0 || string.length() <= maxLength) {
+			return string;
+		}
+
+		return string.substring(0, maxLength - 1) + "…";
 	}
 
 	private void createColumn(final AbstractColumnLayout layout, final String name, final int weight,
