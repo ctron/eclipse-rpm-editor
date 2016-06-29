@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.packagedrone.utils.rpm.Architecture;
 import org.eclipse.packagedrone.utils.rpm.OperatingSystem;
 import org.eclipse.packagedrone.utils.rpm.RpmLead;
@@ -24,36 +25,53 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 public class OverviewPage {
-	private final Composite container;
+	private final ScrolledForm form;
+
 	private final Text type;
 	private final Text arch;
 	private final Text version;
 	private final Text os;
 	private final Text name;
 	private final Text sigVersion;
+	private final FormToolkit toolkit;
+
+	private final Composite body;
 
 	public OverviewPage(final Composite parent) {
-		this.container = new Composite(parent, SWT.INHERIT_DEFAULT);
-		this.container.setLayout(new GridLayout(2, false));
+		this.toolkit = new FormToolkit(parent.getDisplay());
+		parent.addDisposeListener(evt -> this.toolkit.dispose());
+
+		this.form = this.toolkit.createScrolledForm(parent);
+		this.form.setText("RPM Lead");
+		this.form.setMessage("This page shows the RPM lead information", IMessageProvider.NONE);
+
+		this.toolkit.decorateFormHeading(this.form.getForm());
+
+		this.body = this.form.getBody();
+		this.body.setLayout(new GridLayout(2, false));
 
 		this.name = createField("Name");
 		this.type = createField("Type");
 		this.arch = createField("Architecture");
 		this.os = createField("O/S");
-		this.version = createField("Version");
+		this.version = createField("Lead Version");
 		this.sigVersion = createField("Signature Version");
+
+		this.toolkit.paintBordersFor(this.form.getBody());
 	}
 
 	private Text createField(final String string) {
 		Label label;
-		label = new Label(this.container, SWT.NONE);
+		label = this.toolkit.createLabel(this.body, string, SWT.NONE);
 
 		label.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, false, false));
 		label.setText(string);
 
-		final Text text = new Text(this.container, SWT.BORDER | SWT.READ_ONLY);
+		final Text text = this.toolkit.createText(this.body, null, SWT.READ_ONLY | SWT.SINGLE);
 
 		text.setLayoutData(new GridData(GridData.FILL, GridData.BEGINNING, true, false));
 
@@ -89,6 +107,6 @@ public class OverviewPage {
 	}
 
 	public Composite getContainer() {
-		return this.container;
+		return this.form;
 	}
 }
